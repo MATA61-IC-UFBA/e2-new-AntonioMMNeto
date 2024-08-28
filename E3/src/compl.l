@@ -1,20 +1,36 @@
-%option noyywrap yylineno
 %{
-
-// noyywrap    - no need to deal with multiple input files
-// yylineno    - variable to track line numbers 
-//               that copies otherwise unmatched input to yyout.
-
 #include "token.h"
-
+#include <stdio.h>
 %}
 
 %%
 
+"if"        { return IF; }
+"else"      { return ELSE; }
+"while"     { return WHILE; }
+"return"    { return RETURN; }
 
-. 				{ return ERROR; }
+"<="        { return LTE; }
+">="        { return GTE; }
+"=="        { return EQ; }
+"!="        { return NEQ; }
+"<"         { return LT; }
+">"         { return GT; }
+"="         { return ASSIGN; }
+"+"         { return PLUS; }
+"-"         { return MINUS; }
+"*"         { return MULT; }
+"/"         { return DIV; }
 
+[a-zA-Z_][a-zA-Z0-9_]*    { return ID; }  // Identificadores
+[0-9]+                    { return NUM; } // Números
+\".*\"                    { return STR; } // Strings
+\'.\'                     { return CHAR; } // Caracteres
+
+.           { return ERROR; }
 
 %%
 
-
+int yywrap() {
+    return 1;
+}
